@@ -1,6 +1,6 @@
 const getCodeStats = require('@hotsuop/codestats');
 
-const filePath = "./codeStatsChecker.js";
+const filePath = "./testing.js";
 const stats = getCodeStats(filePath);
 
 if (stats.error) {
