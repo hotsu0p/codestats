@@ -1,63 +1,91 @@
-markdown
-Copy code
-
-# Code Stats Checker
+# Discord Code Stats Bot
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-A simple npm package to check the number of lines and characters in your code.
+A Discord bot that calculates and displays code statistics for a specified directory. It uses the `code-stats` npm package to calculate the statistics and discord.js to interact with Discord.
 
 ## Installation
 
-```bash
-npm install @yourusername/code-stats-checker
-Replace yourusername with your npm username or organization name.
-```
+\`\`\`bash
+npm install discord.js @hotsuop/codestats
+\`\`\`
 
 ## Usage
 
-```js
-const getCodeStats = require("@yourusername/code-stats-checker");
-
-const filePath = "path/to/your/code/file.js";
-const stats = getCodeStats(filePath);
-
-if (stats.error) {
-  console.error(stats.error);
-} else {
-  console.log(`Lines: ${stats.lines}`);
-  console.log(`Characters: ${stats.characters}`);
-}
-```
+Once the bot is running, you can use the \`!codeStats\` command in any text channel that the bot has access to. The bot will then calculate the code statistics for the specified directory and display them in an embedded message.
 
 ## API
 
-`getCodeStats(filePath: string): Object`
+\`\`\`js
+getCodeStats(folderPath: string, config: Object): Promise<Object>
+\`\`\`
 
-Returns an object with code statistics or an error if the file couldn't be read.
+Returns a promise that resolves with an object containing code statistics or rejects with an error if the directory couldn't be read.
 
-- `filePath`: The path to the code file.
+- \`folderPath\`: The path to the directory to analyze.
+- \`config\`: An optional configuration object.
 
 ## Example
 
-```js
-const getCodeStats = require("@yourusername/code-stats-checker");
+\`\`\`js
+const getCodeStats = require('./index.js');
 
-const filePath = "path/to/your/code/file.js";
-const stats = getCodeStats(filePath);
+// Define the folder path to analyze  
+const folderPath = './hold';
 
-if (stats.error) {
-  console.error(stats.error);
-} else {
-  console.log(`Lines: ${stats.lines}`);
-  console.log(`Characters: ${stats.characters}`);
-}
-```
+// Define the configuration object
+const config = {
+languages: ['js', 'py', 'ts', 'json'], // Add your desired languages
+exclude: ['node_modules', 'build'],
+depthLimit: Infinity,
+};
+
+// Call getCodeStats with the folder path and configuration
+getCodeStats(folderPath, config)
+.then(projectStats => {
+// Display the calculated project stats
+console.log('Project Statistics:');
+console.log(\`Total Files: \${projectStats.totalFiles}\`);
+console.log(\`Total Lines: \${projectStats.totalLines}\`);
+console.log(\`Total Characters: \${projectStats.totalCharacters}\`);
+console.log(\`Total Functions: \${projectStats.totalFunctions}\`);
+console.log(\`Total Classes: \${projectStats.totalClasses}\`);
+console.log(\`Total Comments: \${projectStats.totalComments}\`);
+})
+.catch(error => {
+console.error(error.message);
+});
+//// Begin Code Explanation ////
+## Summary
+The code snippet is a JavaScript function called `getCodeStats` that takes a folder path and a configuration object as inputs. It returns a promise that resolves with an object containing code statistics or rejects with an error if the directory couldn't be read.
+
+## Code Analysis
+### Inputs
+- `folderPath` (string): The path to the directory to analyze.
+- `config` (object): An optional configuration object.
+
+### Flow
+1. The `getCodeStats` function is called with the `folderPath` and `config` as inputs.
+2. The function internally uses the `code-stats` npm package to calculate the code statistics for the specified directory.
+3. If the directory can be read successfully, the promise resolves with an object containing the code statistics.
+4. The code statistics are then displayed in the console, including the total number of files, lines, characters, functions, classes, and comments.
+5. If there is an error reading the directory, the promise rejects with an error message, which is then logged to the console.
+
+### Outputs
+- The code snippet outputs the code statistics for the specified directory, including the total number of files, lines, characters, functions, classes, and comments.
+//// End Code Explanation ////
+
+
+
+Here is a markdown code snippet:
+
+//// Begin Code Snippet ////
+\`\`\`
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the LICENSE.md file for details.
 
 ## Acknowledgments
 
@@ -65,7 +93,7 @@ Inspired by the need for a quick code stats checker.
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Issues
 

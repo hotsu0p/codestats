@@ -1,7 +1,7 @@
 {
     "name": "@hotsuop/codestats",
-    "version": "1.0.1",
-    "description": "npm thing",
+    "version": "2.0.0",
+    "description": "Package to check code stats",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,6 +21,9 @@
     "homepage": "https://github.com/hotsu0p/codestats#readme",
     "dependencies": {
         "@hotsuop/codestats": "^1.0.1",
+        "acorn": "^8.11.3",
+        "chalk": "^2.4.2",
+        "discord.js": "^13.17.1",
         "fs": "^0.0.1-security"
     }
 }
