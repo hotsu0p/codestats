@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+Certainly! Here's the raw Markdown content for your Discord Code Stats Bot README:
+
+markdown
+Copy code
+>>>>>>> b3b448b84535d84e56c92a6073d2b99bda452b53
 # Discord Code Stats Bot
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
@@ -7,11 +14,23 @@ A Discord bot that calculates and displays code statistics for a specified direc
 
 ## Installation
 
+<<<<<<< HEAD
 \`\`\`bash
 npm install discord.js @hotsuop/codestats
 \`\`\`
+=======
+```bash
+npm install discord.js @hotsuop/codestats
+```
+Usage
+Once the bot is running, you can use the !codeStats command in any text channel that the bot has access to. The bot will then calculate the code statistics for the specified directory and display them in an embedded message.
+>>>>>>> b3b448b84535d84e56c92a6073d2b99bda452b53
 
-## Usage
+API
+javascript
+Copy code
+getCodeStats(folderPath: string, config: Object): Promise<Object>
+Returns a promise that resolves with an object containing code statistics or rejects with an error if the directory couldn't be read.
 
 Once the bot is running, you can use the \`!codeStats\` command in any text channel that the bot has access to. The bot will then calculate the code statistics for the specified directory and display them in an embedded message.
 
@@ -89,12 +108,19 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 
 ## Acknowledgments
 
+Acknowledgments
 Inspired by the need for a quick code stats checker.
 
+<<<<<<< HEAD
 ## Contributing
 
 Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Issues
+=======
+Contributing
+Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
+>>>>>>> b3b448b84535d84e56c92a6073d2b99bda452b53
 
+Issues
 If you find any issues or have suggestions, please open an issue.
