@@ -10,7 +10,7 @@ A simple npm package to check the number of lines and characters in your code.
 ## Installation
 
 ```bash
-npm install @yourusername/code-stats-checker
+npm install @hotsuop/code-stats
 Replace yourusername with your npm username or organization name.
 ```
 
