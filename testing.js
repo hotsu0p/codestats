@@ -5,7 +5,7 @@ const folderPath = './example';
 
 // Define the configuration object
 const config = {
-    languages: ['js', 'html'], // Add more languages if needed
+    languages: ['js', 'html', 'py'], // Add more languages if needed
     exclude: ['node_modules'], // Add folders to exclude
     fileTypes: ['xml', 'css'], // Add more file types if needed
     depthLimit: 5,
