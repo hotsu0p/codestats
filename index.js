@@ -11,13 +11,22 @@ async function getCodeStats(folderPath, config = { languages: ['js'], exclude: [
         totalFunctions: 0,
         totalClasses: 0,
         totalComments: 0,
+        totalFileSizes: 0,
+        averageLinesPerFile: 0,
+        averageCharactersPerFile: 0,
+        averageFunctionsPerFile: 0,
+        averageClassesPerFile: 0,
+        averageCommentsPerFile: 0,
+        uniqueFileTypes: 0,
         fileTypesStats: {},
+        linesOfCodePerLanguage: {},
         files: [],
     };
 
     async function analyzeCode(filePath) {
         try {
             const codeContent = await fs.readFile(filePath, 'utf-8');
+            const fileSize = (await fs.stat(filePath)).size;
             const lines = codeContent.split('\n').length;
             const characters = codeContent.length;
 
@@ -28,8 +37,17 @@ async function getCodeStats(folderPath, config = { languages: ['js'], exclude: [
 
             if (!isJsonFile && config.languages.some(language => filePath.endsWith(`.${language}`))) {
                 const parsedCode = parse(codeContent, { sourceType: 'module' });
-                functionsCount = parsedCode.body.filter(node => node.type === 'FunctionDeclaration').length;
-                classesCount = parsedCode.body.filter(node => node.type === 'ClassDeclaration').length;
+                parsedCode.body.forEach(node => {
+                    if (node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression') {
+                        functionsCount++;
+                    } else if (node.type === 'ClassDeclaration') {
+                        classesCount++;
+                        // Count methods within the class
+                        if (node.body && node.body.body) {
+                            functionsCount += node.body.body.filter(classNode => classNode.type === 'MethodDefinition').length;
+                        }
+                    }
+                });
             }
 
             const comments = codeContent.match(/(\/\/.*$)|(\/\*[\s\S]*?\*\/)/gm) || [];
@@ -40,6 +58,7 @@ async function getCodeStats(folderPath, config = { languages: ['js'], exclude: [
             projectStats.totalFunctions += functionsCount;
             projectStats.totalClasses += classesCount;
             projectStats.totalComments += commentsCount;
+            projectStats.totalFileSizes += fileSize;
 
             const fileType = isJsonFile ? 'json' : path.extname(filePath).slice(1);
             projectStats.fileTypesStats[fileType] = projectStats.fileTypesStats[fileType] || {
@@ -56,12 +75,14 @@ async function getCodeStats(folderPath, config = { languages: ['js'], exclude: [
                 functionsCount,
                 classesCount,
                 commentsCount,
+                fileSize,
                 fileType,
             });
         } catch (error) {
             console.error(chalk.red(`Error reading file ${filePath}: ${error.message}`));
         }
     }
+
 
     async function processFolder(folderPath, depth) {
         if (depth > config.depthLimit) {
@@ -88,6 +109,23 @@ async function getCodeStats(folderPath, config = { languages: ['js'], exclude: [
     }
 
     await processFolder(folderPath, 0);
+
+    // Calculate averages
+    projectStats.averageLinesPerFile = projectStats.totalLines / projectStats.totalFiles;
+    projectStats.averageCharactersPerFile = projectStats.totalCharacters / projectStats.totalFiles;
+    projectStats.averageFunctionsPerFile = projectStats.totalFunctions / projectStats.totalFiles;
+    projectStats.averageClassesPerFile = projectStats.totalClasses / projectStats.totalFiles;
+    projectStats.averageCommentsPerFile = projectStats.totalComments / projectStats.totalFiles;
+
+    // Count unique file types
+    projectStats.uniqueFileTypes = Object.keys(projectStats.fileTypesStats).length;
+
+    // Lines of code per language
+    config.languages.forEach(language => {
+        projectStats.linesOfCodePerLanguage[language] = projectStats.files
+            .filter(file => file.fileType === language)
+            .reduce((sum, file) => sum + file.lines, 0);
+    });
 
     return projectStats;
 }

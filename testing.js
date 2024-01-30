@@ -1,14 +1,16 @@
-const getCodeStats = require('@hotsuop/codestats');
+const getCodeStats = require('./index.js');
 
 // Define the folder path to analyze
 const folderPath = './example';
 
 // Define the configuration object
 const config = {
-    languages: ['js', 'py', 'ts', 'json'], // Add your desired languages
-    exclude: ['node_modules', 'build'],
-    depthLimit: Infinity,
+    languages: ['js', 'html'], // Add more languages if needed
+    exclude: ['node_modules'], // Add folders to exclude
+    fileTypes: ['xml', 'css'], // Add more file types if needed
+    depthLimit: 5,
 };
+
 
 // Call getCodeStats with the folder path and configuration
 getCodeStats(folderPath, config)

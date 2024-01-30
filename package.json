@@ -1,6 +1,6 @@
 {
     "name": "@hotsuop/codestats",
-    "version": "2.0.0",
+    "version": "2.5.0",
     "description": "Package to check code stats",
     "main": "index.js",
     "scripts": {
